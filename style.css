@@ -1,34 +1,98 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
+    color: #333;
 }
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #4caf50;
+}
+
+/* Container */
 .container {
-    width: 300px;
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
     padding: 20px;
-    background: white;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Input Container */
 .input-container {
     display: flex;
     gap: 10px;
+    margin-bottom: 20px;
 }
+
+.input-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.input-container button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.input-container button:hover {
+    background-color: #45a049;
+}
+
+/* Task List */
 #task-list {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
+
 #task-list li {
     display: flex;
     justify-content: space-between;
-    margin: 5px 0;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
 }
-.completed {
+
+#task-list li:hover {
+    background-color: #f1f1f1;
+    transform: scale(1.02);
+}
+
+#task-list li.completed {
     text-decoration: line-through;
-    color: gray;
+    color: #999;
 }
+
+#task-list .task-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#task-list .task-actions button {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font

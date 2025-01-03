@@ -95,4 +95,65 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+#task-list .task-actions button:hover {
+    background-color: #c0392b;
+}
+
+#task-list .task-actions input[type="checkbox"] {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+/* Filter Container */
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.filter-container button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ddd;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.filter-container button:hover {
+    background-color: #4caf50;
+    color: white;
+}
+
+.filter-container button[data-filter="all"] {
+    background-color: #4caf50;
+    color: white;
+}
+
+/* Dropdown Filters */
+select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Task Priority Borders */
+#task-list li[data-priority="High"] {
+    border-left: 5px solid red;
+}
+
+#task-list li[data-priority="Medium"] {
+    border-left: 5px solid orange;
+}
+
+#task-list li[data-priority="Low"] {
+    border-left: 5px solid green;
+}

@@ -6,6 +6,7 @@ const addTaskBtn = document.getElementById('add-task-btn');
 const taskList = document.getElementById('task-list');
 const priorityFilter = document.getElementById('priority-filter');
 const categoryFilter = document.getElementById('category-filter');
+const searchInput = document.getElementById('search-input');
 
 // Add a new task
 addTaskBtn.addEventListener('click', () => {
@@ -63,7 +64,22 @@ taskList.addEventListener('click', (e) => {
     }
 });
 
-// Filter tasks by status
+// Filter tasks by category
+categoryFilter.addEventListener('change', () => {
+    const selectedCategory = categoryFilter.value;
+    const tasks = taskList.children;
+
+    Array.from(tasks).forEach(task => {
+        const category = task.dataset.category;
+        if (selectedCategory === 'all' || category === selectedCategory) {
+            task.style.display = 'flex';
+        } else {
+            task.style.display = 'none';
+        }
+    });
+});
+
+// Filter tasks by priority
 priorityFilter.addEventListener('change', () => {
     const selectedPriority = priorityFilter.value;
     const tasks = taskList.children;
@@ -78,17 +94,13 @@ priorityFilter.addEventListener('change', () => {
     });
 });
 
-// Filter tasks by category
-categoryFilter.addEventListener('change', () => {
-    const selectedCategory = categoryFilter.value;
+// Search tasks
+searchInput.addEventListener('input', () => {
+    const searchText = searchInput.value.toLowerCase();
     const tasks = taskList.children;
 
     Array.from(tasks).forEach(task => {
-        const category = task.dataset.category;
-        if (selectedCategory === 'all' || category === selectedCategory) {
-            task.style.display = 'flex';
-        } else {
-            task.style.display = 'none';
-        }
+        const taskText = task.querySelector('span').innerText.toLowerCase();
+        task.style.display = taskText.includes(searchText) ? 'flex' : 'none';
     });
 });

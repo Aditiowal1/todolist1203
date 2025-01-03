@@ -4,84 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
-    <style>
-        /* Basic styles for layout */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            width: 80%;
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .task-input-container {
-            margin-bottom: 20px;
-        }
-        #task-input, #task-category, #task-priority {
-            padding: 8px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        #add-task-btn {
-            padding: 8px 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #add-task-btn:hover {
-            background-color: #45a049;
-        }
-        .filter-container {
-            margin-bottom: 20px;
-        }
-        #priority-filter, #category-filter {
-            padding: 8px;
-            font-size: 16px;
-        }
-        #task-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .completed {
-            text-decoration: line-through;
-            color: gray;
-        }
-        .delete-task {
-            background-color: #ff4747;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .delete-task:hover {
-            background-color: #e63946;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Task Manager</h1>
-        
+
+        <!-- Search Section -->
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search tasks...">
+        </div>
+
         <!-- Filter Section -->
         <div class="filter-container">
             <label for="priority-filter">Filter by Priority:</label>
@@ -123,118 +56,6 @@
         </ul>
     </div>
 
-    <script>
-        // Select DOM elements
-        const taskInput = document.getElementById('task-input');
-        const taskCategory = document.getElementById('task-category');
-        const taskPriority = document.getElementById('task-priority');
-        const addTaskBtn = document.getElementById('add-task-btn');
-        const taskList = document.getElementById('task-list');
-        const priorityFilter = document.getElementById('priority-filter');
-        const categoryFilter = document.getElementById('category-filter');
-        const filterButtons = document.querySelectorAll('.filter-container button');
-
-        // Add a new task
-        addTaskBtn.addEventListener('click', () => {
-            const taskText = taskInput.value.trim();
-            const category = taskCategory.value;
-            const priority = taskPriority.value;
-
-            if (taskText === '') return;
-
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span>${taskText} (${category}) - <strong>${priority} Priority</strong></span>
-                <div>
-                    <input type="checkbox" class="mark-complete">
-                    <button class="delete-task">Delete</button>
-                </div>
-            `;
-            li.dataset.category = category; // Store category in data attribute
-            li.dataset.status = 'pending'; // Default status is pending
-            li.dataset.priority = priority; // Store priority in data attribute
-            li.style.borderLeft = getPriorityColor(priority); // Add visual indicator
-            taskList.appendChild(li);
-
-            taskInput.value = ''; // Clear input field
-        });
-
-        // Get color for priority
-        function getPriorityColor(priority) {
-            switch (priority) {
-                case 'High':
-                    return '5px solid red';
-                case 'Medium':
-                    return '5px solid orange';
-                case 'Low':
-                    return '5px solid green';
-                default:
-                    return 'none';
-            }
-        }
-
-        // Mark a task as complete
-        taskList.addEventListener('change', (e) => {
-            if (e.target.classList.contains('mark-complete')) {
-                const listItem = e.target.closest('li');
-                listItem.dataset.status = e.target.checked ? 'completed' : 'pending';
-                listItem.classList.toggle('completed', e.target.checked);
-            }
-        });
-
-        // Delete a task
-        taskList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-task')) {
-                const listItem = e.target.closest('li');
-                taskList.removeChild(listItem);
-            }
-        });
-
-        // Filter tasks by status
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
-                const tasks = taskList.children;
-
-                Array.from(tasks).forEach(task => {
-                    if (filter === 'all' || task.dataset.status === filter) {
-                        task.style.display = 'flex';
-                    } else {
-                        task.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // Filter tasks by category
-        categoryFilter.addEventListener('change', () => {
-            const selectedCategory = categoryFilter.value;
-            const tasks = taskList.children;
-
-            Array.from(tasks).forEach(task => {
-                const category = task.dataset.category;
-                if (selectedCategory === 'all' || category === selectedCategory) {
-                    task.style.display = 'flex';
-                } else {
-                    task.style.display = 'none';
-                }
-            });
-        });
-
-        // Filter tasks by priority
-        priorityFilter.addEventListener('change', () => {
-            const selectedPriority = priorityFilter.value;
-            const tasks = taskList.children;
-
-            Array.from(tasks).forEach(task => {
-                const priority = task.dataset.priority;
-                if (selectedPriority === 'all' || priority === selectedPriority) {
-                    task.style.display = 'flex';
-                } else {
-                    task.style.display = 'none';
-                }
-            });
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

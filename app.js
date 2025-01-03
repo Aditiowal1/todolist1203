@@ -1,12 +1,11 @@
-// DOM Elements
+// Select DOM elements
 const taskInput = document.getElementById('task-input');
 const taskCategory = document.getElementById('task-category');
 const taskPriority = document.getElementById('task-priority');
 const addTaskBtn = document.getElementById('add-task-btn');
 const taskList = document.getElementById('task-list');
-const filterButtons = document.querySelectorAll('.filter-container button');
-const categoryFilter = document.getElementById('category-filter');
 const priorityFilter = document.getElementById('priority-filter');
+const categoryFilter = document.getElementById('category-filter');
 
 // Add a new task
 addTaskBtn.addEventListener('click', () => {
@@ -14,40 +13,26 @@ addTaskBtn.addEventListener('click', () => {
     const category = taskCategory.value;
     const priority = taskPriority.value;
 
-    if (!taskText) {
-        alert('Task cannot be empty!');
-        return;
-    }
+    if (taskText === '') return;
 
-    // Create task element
-    const taskItem = document.createElement('li');
-    taskItem.classList.add('task-item');
-    taskItem.dataset.category = category;
-    taskItem.dataset.priority = priority;
-    taskItem.dataset.status = 'pending'; // Default status
-
-    // Add task content
-    taskItem.innerHTML = `
-        <span>
-            ${taskText} <em>(${category})</em> - <strong>${priority} Priority</strong>
-        </span>
-        <div class="task-actions">
-            <input type="checkbox" class="mark-complete"> Complete
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span>${taskText} (${category}) - <strong>${priority} Priority</strong></span>
+        <div>
+            <input type="checkbox" class="mark-complete">
             <button class="delete-task">Delete</button>
         </div>
     `;
+    li.dataset.category = category; // Store category in data attribute
+    li.dataset.status = 'pending'; // Default status is pending
+    li.dataset.priority = priority; // Store priority in data attribute
+    li.style.borderLeft = getPriorityColor(priority); // Add visual indicator
+    taskList.appendChild(li);
 
-    // Add visual priority indicator
-    taskItem.style.borderLeft = getPriorityColor(priority);
-
-    // Append to task list
-    taskList.appendChild(taskItem);
-
-    // Clear input field
-    taskInput.value = '';
+    taskInput.value = ''; // Clear input field
 });
 
-// Get priority color
+// Get color for priority
 function getPriorityColor(priority) {
     switch (priority) {
         case 'High':
@@ -61,47 +46,31 @@ function getPriorityColor(priority) {
     }
 }
 
-// Mark task as complete
+// Mark a task as complete
 taskList.addEventListener('change', (e) => {
     if (e.target.classList.contains('mark-complete')) {
-        const taskItem = e.target.closest('li');
-        taskItem.dataset.status = e.target.checked ? 'completed' : 'pending';
-        taskItem.classList.toggle('completed', e.target.checked);
+        const listItem = e.target.closest('li');
+        listItem.dataset.status = e.target.checked ? 'completed' : 'pending';
+        listItem.classList.toggle('completed', e.target.checked);
     }
 });
 
-// Delete task
+// Delete a task
 taskList.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete-task')) {
-        const taskItem = e.target.closest('li');
-        taskList.removeChild(taskItem);
+        const listItem = e.target.closest('li');
+        taskList.removeChild(listItem);
     }
 });
 
 // Filter tasks by status
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const filter = button.getAttribute('data-filter');
-        const tasks = Array.from(taskList.children);
+priorityFilter.addEventListener('change', () => {
+    const selectedPriority = priorityFilter.value;
+    const tasks = taskList.children;
 
-        tasks.forEach(task => {
-            if (filter === 'all' || task.dataset.status === filter) {
-                task.style.display = 'flex';
-            } else {
-                task.style.display = 'none';
-            }
-        });
-    });
-});
-
-// Filter tasks by category
-categoryFilter.addEventListener('change', () => {
-    const selectedCategory = categoryFilter.value;
-    const tasks = Array.from(taskList.children);
-
-    tasks.forEach(task => {
-        const category = task.dataset.category;
-        if (selectedCategory === 'all' || category === selectedCategory) {
+    Array.from(tasks).forEach(task => {
+        const priority = task.dataset.priority;
+        if (selectedPriority === 'all' || priority === selectedPriority) {
             task.style.display = 'flex';
         } else {
             task.style.display = 'none';
@@ -109,14 +78,14 @@ categoryFilter.addEventListener('change', () => {
     });
 });
 
-// Filter tasks by priority
-priorityFilter.addEventListener('change', () => {
-    const selectedPriority = priorityFilter.value;
-    const tasks = Array.from(taskList.children);
+// Filter tasks by category
+categoryFilter.addEventListener('change', () => {
+    const selectedCategory = categoryFilter.value;
+    const tasks = taskList.children;
 
-    tasks.forEach(task => {
-        const priority = task.dataset.priority;
-        if (selectedPriority === 'all' || priority === selectedPriority) {
+    Array.from(tasks).forEach(task => {
+        const category = task.dataset.category;
+        if (selectedCategory === 'all' || category === selectedCategory) {
             task.style.display = 'flex';
         } else {
             task.style.display = 'none';
